@@ -38,4 +38,4 @@ def attackPlayer(attacker:dict, target:dict) :
     setPlayer(attacker, "score", attacker["score"] + 1)
   
 def displayMatchResult() :
-  return PlayerList.sort(Reverse = True,key = name and score  and health  )
+  return PlayerList.sort(Reverse = True,key =Player['name'] and Player['score']  and Player['health'] )
