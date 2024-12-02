@@ -29,6 +29,13 @@ def setPlayer(player, key, value) :
   player[key] = value
 
 def attackPlayer(attacker:dict, target:dict) :
+  if target['defense'] :
+    damage = max(0,attacker[attack] - target[defense_strenght]) 
+    setPlayer (target, 'defense', False) 
+  else : 
+    damage = attacker[attack]
+    setPlayer (target, 'health", True)
+    setPlayer(attacker, "score", attacker["score"] + 1)
   
 def displayMatchResult() :
   return PlayerList.sort(Reverse = True,key = name and score  and health  )
