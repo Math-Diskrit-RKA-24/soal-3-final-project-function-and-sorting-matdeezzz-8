@@ -12,7 +12,7 @@ def createNewPlayer(name, damage=0, defensePower=0) :
           defensePower = defensePower,
           defense = false }
  
-def addPlayer(player) :
+def addPlayer(player) : 
   
   global PlayerList
   PlayerList.append(player)
@@ -31,3 +31,4 @@ def setPlayer(player, key, value) :
 def attackPlayer(attacker:dict, target:dict) :
   
 def displayMatchResult() :
+  return PlayerList.sort(Reverse = True,key = name and score  and health  )
