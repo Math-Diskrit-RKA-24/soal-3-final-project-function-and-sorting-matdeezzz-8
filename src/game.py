@@ -28,7 +28,7 @@ def setPlayer(player, key, value):
     player[key] = value
 
 def attackPlayer(attacker, target):
-    if target.get("defense"):
+    if target["defense"]:
         damage = max(0, attacker["damage"] - target["defensePower"])
         setPlayer(target, "defense", False)  
         score_increment = 0.8 
