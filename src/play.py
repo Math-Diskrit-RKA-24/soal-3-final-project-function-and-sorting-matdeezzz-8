@@ -1,50 +1,97 @@
-import time
-from game import *
+##MAAF MAS KETIDURAN LUPA COMMIT
 
-initPlayers()
+import tkinter as tk
+from tkinter import simpledialog, messagebox
+from game import *  
 
-hehe = createNewPlayer(name="hehe", damage=20, defensePower=5)
-pua = createNewPlayer(name="pua", damage=15, defensePower=10)
-lee = createNewPlayer(name="Lee", damage=25, defensePower=7)
-sang_legenda = createNewPlayer(name="Sang Legenda", damage=30, defensePower=8)
+def rankPlayers():
+    sorted_players = sorted(PlayerList, key=lambda player: player["health"], reverse=True)
 
-addPlayer(hehe)
-addPlayer(pua)
-addPlayer(lee)
-addPlayer(sang_legenda)
+    ranking_message = "=== Rankingnya b ===\n"
+    for idx, player in enumerate(sorted_players, start=1):
+        ranking_message += f"{idx}. {player['name']} - Health: {player['health']}\n"
+    
+    show_popup(ranking_message)
+def show_popup(message):
+    popup = tk.Toplevel()
+    popup.title("simulasi game")
+    label = tk.Label(popup, text=message)
+    label.pack(padx=55, pady=55)
+    button = tk.Button(popup, text="OK", command=popup.destroy)
+    button.pack(pady=20)
 
-print("=== Simulasi Game Dimulai ===\n")
+def createPlayerMenu():
+    name = simpledialog.askstring("Player Name", "Enter player name:")
+    damage = simpledialog.askinteger("Damage", f"Enter damage for {name}:")
+    defense = simpledialog.askinteger("Defense", f"Enter defense for {name}:")
+    
+    player = createNewPlayer(name, damage, defense)
+    addPlayer(player)  
+    
+    print("Current PlayerList:", [player["name"] for player in PlayerList])  
+    show_popup(f"Player {name} added successfully!")
 
-print("hehe menyerang Lee:")
-attackPlayer(hehe, lee)
-print(f"Lee's Health: {lee['health']}, hehe Score: {hehe['score']}\n")
-time.sleep(1)
+def choose_target():
+    if len(PlayerList) < 2:
+        show_popup("Pemainnya ngga ada kocakk")
+        return None, None
 
-print("pua menyerang Sang Legenda:")
-attackPlayer(pua, sang_legenda)
-print(f"Sang Legenda's Health: {sang_legenda['health']}, pua Score: {pua['score']}\n")
-time.sleep(1)
+    player_names = [player["name"] for player in PlayerList]
+    attacker_name = simpledialog.askstring("Select Attacker", "yang nyerang siapa " + ", ".join(player_names))
 
-setPlayer(hehe, "defense", True)
-attackPlayer(sang_legenda, hehe)
-print(f"hehe's Health: {hehe['health']}, Sang Legenda Score: {sang_legenda['score']}\n")
-time.sleep(1)
+    if attacker_name not in player_names:
+        show_popup("dia ngga ikut main")
+        return None, None
 
-print("hehe menyerang pua:")
-attackPlayer(hehe, pua)
-print(f"pua's Health: {pua['health']}, hehe Score: {hehe['score']}\n")
-time.sleep(1)
+    target_names = [player["name"] for player in PlayerList if player["name"] != attacker_name]
+    target_name = simpledialog.askstring("Select Target", f"Targetnya siapa {attacker_name} from: " + ", ".join(target_names))
 
-print("Lee menyerang Sang Legenda (Sang Legenda dalam mode defense):")
-setPlayer(sang_legenda, "defense", True)
-attackPlayer(lee, sang_legenda)
-print(f"Sang Legenda's Health: {sang_legenda['health']}, Lee Score: {lee['score']}\n")
-time.sleep(1)
+    if target_name not in target_names:
+        show_popup("dia ngga ikut main")
+        return None, None
 
-print("pua menyerang hehe yang sudah lemah:")
-attackPlayer(pua, hehe)
-print(f"hehe's Health: {hehe['health']}, pua Score: {pua['score']}\n")
-time.sleep(1)
+    attacker = next(player for player in PlayerList if player["name"] == attacker_name)
+    target = next(player for player in PlayerList if player["name"] == target_name)
 
-print("=== Hasil Akhir Pertandingan ===")
-displayMatchResult()
+    return attacker, target
+
+def startGame():
+    if len(PlayerList) < 2:
+        show_popup("mau lawan siapa kocakk")
+        return
+
+    show_popup("Game Started!")
+
+    while len(PlayerList) > 1:
+        attacker, target = choose_target()
+        
+        if attacker is None or target is None:
+            return 
+        damage = max(attacker["damage"] - target["defense"], 0)
+        target["health"] -= damage  
+        
+        message = f"{attacker['name']} nyerang {target['name']} dengan {damage} damage!"
+        show_popup(message)
+
+        if target["health"] <= 0:
+            message = f"{target['name']} kalah hahahaha!"
+            show_popup(message)
+            removePlayer(target["name"])  
+      
+        result = "\n".join([f"{player['name']}: {player['health']} health" for player in PlayerList])
+        show_popup(result)
+
+    winner = PlayerList[0]  
+    final_result = f"Game Over!\nWinner: {winner['name']}\nHealth: {winner['health']}\nScore: {winner['score']}"
+    show_popup(final_result)
+
+root = tk.Tk()
+root.title("Simulasi Game")
+
+create_player_button = tk.Button(root, text="Create Player", command=createPlayerMenu)
+create_player_button.pack(pady=55)
+
+start_game_button = tk.Button(root, text="Start Game", command=startGame)
+start_game_button.pack(pady=55)
+
+root.mainloop()
