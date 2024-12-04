@@ -28,23 +28,28 @@ def setPlayer(player, key, value):
     player[key] = value
 
 def attackPlayer(attacker, target):
-    if target["defense"]:
-        damage = max(0, attacker["damage"] - target["defensePower"])
-        setPlayer(target, "defense", False)  
-        score_increment = 0.8  
-    else:
-        damage = attacker["damage"]
-        score_increment = 1  
-
-    new_health = target["health"] - damage
-    setPlayer(target, "health", new_health)
     
-    current_score = attacker.get("score", 0)
-    setPlayer(attacker, "score", current_score + score_increment)
+    if target.get("defense"):
+        
+        attackScore = round(attacker.get("score") + 1 - (1 / target["defensePower"]), 2)
+        targetHealth = target.get("health") - attacker.get("damage") + target.get("defensePower")
+        setPlayer(target,"defense",False)
+        
+    else:
+     
+        attackScore = round(attacker.get("score") + 1,2) 
+        targetHealth = target.get("health") - attacker.get("damage") 
+        attackScore = max(0, attackScore)
 
+    setPlayer(target, "health",  targetHealth)
+    setPlayer(attacker, "score", attackScore)
+
+    
 def displayMatchResult():
     global PlayerList
     PlayerList.sort(key=lambda x: (-x["score"], -x["health"]))
 
     for i, player in enumerate(PlayerList, start=1):
         print(f"Rank {i}: {player['name']} | Score: {player['score']} | Health: {player['health']}")
+
+#Mohon maaf mas telat 20 menitt
