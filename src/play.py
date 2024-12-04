@@ -3,36 +3,36 @@ from game import initPlayers, createNewPlayer, addPlayer, attackPlayer, setPlaye
 
 initPlayers()
 
-handoko = createNewPlayer(name="Handoko", damage=20, defensePower=5)
-susi = createNewPlayer(name="Susi", damage=15, defensePower=10)
+hehe = createNewPlayer(name="Handoko", damage=20, defensePower=5)
+pua = createNewPlayer(name="Susi", damage=15, defensePower=10)
 lee = createNewPlayer(name="Lee", damage=25, defensePower=7)
 sang_legenda = createNewPlayer(name="Sang Legenda", damage=30, defensePower=8)
 
-addPlayer(handoko)
-addPlayer(susi)
+addPlayer(hehe)
+addPlayer(pua)
 addPlayer(lee)
 addPlayer(sang_legenda)
 
 print("=== Simulasi Game Dimulai ===\n")
 
 print("Handoko menyerang Lee:")
-attackPlayer(handoko, lee)
-print(f"Lee's Health: {lee['health']}, Handoko's Score: {handoko['score']}\n")
+attackPlayer(hehe, lee)
+print(f"Lee's Health: {lee['health']}, Handoko's Score: {hehe['score']}\n")
 time.sleep(1)
 
 print("Susi menyerang Sang Legenda:")
-attackPlayer(susi, sang_legenda)
-print(f"Sang Legenda's Health: {sang_legenda['health']}, Susi's Score: {susi['score']}\n")
+attackPlayer(pua, sang_legenda)
+print(f"Sang Legenda's Health: {sang_legenda['health']}, Susi's Score: {pua['score']}\n")
 time.sleep(1)
 
-setPlayer(handoko, "defense", True)
-attackPlayer(sang_legenda, handoko)
-print(f"Handoko's Health: {handoko['health']}, Sang Legenda's Score: {sang_legenda['score']}\n")
+setPlayer(hehe, "defense", True)
+attackPlayer(sang_legenda, hehe)
+print(f"Handoko's Health: {hehe['health']}, Sang Legenda's Score: {sang_legenda['score']}\n")
 time.sleep(1)
 
 print("Handoko menyerang Susi:")
-attackPlayer(handoko, susi)
-print(f"Susi's Health: {susi['health']}, Handoko's Score: {handoko['score']}\n")
+attackPlayer(hehe, pua)
+print(f"Susi's Health: {pua['health']}, Handoko's Score: {hehe['score']}\n")
 time.sleep(1)
 
 print("Lee menyerang Sang Legenda (Sang Legenda dalam mode defense):")
@@ -42,10 +42,9 @@ print(f"Sang Legenda's Health: {sang_legenda['health']}, Lee's Score: {lee['scor
 time.sleep(1)
 
 print("Susi menyerang Handoko yang sudah lemah:")
-attackPlayer(susi, handoko)
-print(f"Handoko's Health: {handoko['health']}, Susi's Score: {susi['score']}\n")
+attackPlayer(pua, hehe)
+print(f"Handoko's Health: {hehe['health']}, Susi's Score: {pua['score']}\n")
 time.sleep(1)
 
 print("=== Hasil Akhir Pertandingan ===")
 displayMatchResult()
-
