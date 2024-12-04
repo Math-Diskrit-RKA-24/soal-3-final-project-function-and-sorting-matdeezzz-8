@@ -31,13 +31,16 @@ def attackPlayer(attacker, target):
     if target["defense"]:
         damage = max(0, attacker["damage"] - target["defensePower"])
         setPlayer(target, "defense", False)  
-        tambah = 0.8 
+        score_increment = 0.8  
     else:
         damage = attacker["damage"]
-        tambah = 1  
-   
-    setPlayer(target, "health", target["health"] - damage)
-    setPlayer(attacker, "score",attacker["score"]  + tambah)
+        score_increment = 1  
+
+    new_health = target["health"] - damage
+    setPlayer(target, "health", new_health)
+    
+    current_score = attacker.get("score", 0)
+    setPlayer(attacker, "score", current_score + score_increment)
 
 def displayMatchResult():
     global PlayerList
