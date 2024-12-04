@@ -35,12 +35,9 @@ def attackPlayer(attacker, target):
     else:
         damage = attacker["damage"]
         score_increment = 1  
-
-    new_health = target["health"] - damage
-    setPlayer(target, "health", new_health)
-
-    current_score = attacker.get("score", 0)
-    setPlayer(attacker, "score", current_score + score_increment)
+   
+    setPlayer(target, "health", target["health"] - damage)
+    setPlayer(attacker, "score",attacker["score"]  + score)
 
 def displayMatchResult():
     global PlayerList
